@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Question</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #fff5f7;
+            font-family: 'Georgia', serif;
+            overflow: hidden;
+            touch-action: manipulation; /* Prevents accidental zooming on mobile */
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 15px 45px rgba(255, 182, 193, 0.4);
+            width: 80%;
+            max-width: 400px;
+            border: 2px solid #ffc1cc;
+            z-index: 10;
+        }
+
+        .main-image {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 20px;
+            margin-bottom: 20px;
+        }
+
+        h1 { color: #d81b60; font-size: 1.8rem; margin: 0 0 20px 0; }
+        
+        .buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            /* Added height to ensure space for the static Yes button */
+            min-height: 60px; 
+        }
+
+        #yesBtn {
+            background-color: #ff4081;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            z-index: 20;
+        }
+
+        #noBtn {
+            background-color: #fce4ec;
+            color: #ff4081;
+            border: 1px solid #ff4081;
+            padding: 10px 25px;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            /* Changed to relative initially so it shows up in the box */
+            position: relative; 
+            transition: 0.2s ease;
+        }
+
+        .paris-screen {
+            display: none;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="questionScreen">
+        <img src="koala.jpg" alt="Koala" class="main-image">
+        <h1>Finia, will you be my valentine?</h1>
+        <div class="buttons">
+            <button id="yesBtn" onclick="goToParis()">Yes!</button>
+            <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">No</button>
+        </div>
+    </div>
+
+    <div class="container paris-screen" id="parisScreen">
+        <img src="Paris.jpg" alt="Paris" class="main-image">
+        <h1>I love youuu <3 </h1>
+        <p style="font-size: 1.2rem; color: #d81b60;">See you in Paris, my Valentine. ❤️</p>
+    </div>
+
+    <script>
+        function moveButton() {
+            const noBtn = document.getElementById('noBtn');
+            
+            // Switch to absolute only when she tries to click/hover
+            noBtn.style.position = 'absolute';
+            
+            // Calculate random position
+            // We subtract a bit more to keep it away from screen edges on small iPhones
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 40) + 20;
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 40) + 20;
+            
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+        }
+
+        function goToParis() {
+            document.getElementById('questionScreen').style.display = 'none';
+            document.getElementById('parisScreen').style.display = 'block';
+
+            const duration = 3 * 1000;
+            const end = Date.now() + duration;
+
+            (function frame() {
+                confetti({
+                    particleCount: 2,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: ['#ff4081', '#ffffff']
+                });
+                confetti({
+                    particleCount: 2,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: ['#ff4081', '#ffffff']
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+        }
+    </script>
+</body>
+</html>
